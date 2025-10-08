@@ -1,0 +1,3 @@
+[submodule "src/rhody"]
+	path = src/rhody
+	url = https://github.com/jakebonney10/rhody.git
