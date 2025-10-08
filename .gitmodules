@@ -13,3 +13,6 @@
 [submodule "src/project11/mru_transform"]
 	path = src/project11/mru_transform
 	url = https://github.com/SeawardScience/mru_transform.git
+[submodule "src/rhody"]
+	path = src/rhody
+	url = https://github.com/jakebonney10/rhody.git
