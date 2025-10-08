@@ -4,3 +4,12 @@
 [submodule "src/nucleus_driver"]
 	path = src/nucleus_driver
 	url = https://github.com/NortekSupport/nucleus_driver.git
+[submodule "src/project11/project11_msgs"]
+	path = src/project11/project11_msgs
+	url = https://github.com/rolker/project11_msgs.git
+[submodule "src/project11/project11"]
+	path = src/project11/project11
+	url = https://github.com/rolker/project11.git
+[submodule "src/project11/mru_transform"]
+	path = src/project11/mru_transform
+	url = https://github.com/SeawardScience/mru_transform.git
