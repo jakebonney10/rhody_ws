@@ -53,3 +53,7 @@ CATKIN_IGNORE
 install/
 
 log/
+
+.vscode/
+
+src/gemini_sonar_driver/GeminiSDK_v2.0.41.0_Ubuntu_22.04_x86_64/

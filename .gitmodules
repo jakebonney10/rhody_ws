@@ -16,3 +16,12 @@
 [submodule "src/rhody"]
 	path = src/rhody
 	url = https://github.com/jakebonney10/rhody.git
+[submodule "src/ros2sonic"]
+	path = src/ros2sonic
+	url = git@github.com:SeawardScience/ros2sonic.git
+[submodule "src/acoustic_msgs_tools"]
+	path = src/acoustic_msgs_tools
+	url = https://github.com/k2oceanic/acoustic_msgs_tools.git
+[submodule "src/gemini_sonar_driver"]
+	path = src/gemini_sonar_driver
+	url = https://github.com/jakebonney10/gemini_sonar_driver.githttps://github.com/jakebonney10/gemini_sonar_driver.git
