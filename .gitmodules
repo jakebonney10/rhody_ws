@@ -22,6 +22,6 @@
 [submodule "src/gemini_sonar_driver"]
 	path = src/gemini_sonar_driver
 	url = https://github.com/jakebonney10/gemini_sonar_driver.githttps://github.com/jakebonney10/gemini_sonar_driver.git
-[submodule "src/subsonus_driver"]
-	path = src/subsonus_driver
-	url = https://github.com/jakebonney10/subsonus_driver.git
+[submodule "src/adnav_driver"]
+	path = src/adnav_driver
+	url = https://github.com/jakebonney10/adnav_driver.git
