@@ -25,6 +25,9 @@
 [submodule "src/adnav_driver"]
 	path = src/adnav_driver
 	url = https://github.com/jakebonney10/adnav_driver.git
-[submodule "src/reach_robotics_sdk"]
-	path = src/reach_robotics_sdk
-	url = https://github.com/jakebonney10/reach_robotics_sdk.git
+[submodule "src/voyis_discovery_driver"]
+	path = src/voyis_discovery_driver
+	url = https://github.com/jakebonney10/voyis_discovery_driver.git
+[submodule "src/reach_robotics"]
+	path = src/reach_robotics
+	url = https://github.com/jakebonney10/reach_robotics.git
