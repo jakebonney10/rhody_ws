@@ -31,3 +31,6 @@
 [submodule "src/reach_robotics"]
 	path = src/reach_robotics
 	url = https://github.com/jakebonney10/reach_robotics.git
+[submodule "src/rviz_sonar_image"]
+	path = src/rviz_sonar_image
+	url = https://github.com/jakebonney10/rviz_sonar_image.git
