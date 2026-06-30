@@ -34,3 +34,6 @@
 [submodule "src/rviz_sonar_image"]
 	path = src/rviz_sonar_image
 	url = https://github.com/jakebonney10/rviz_sonar_image.git
+[submodule "src/fls_sonar_proc"]
+	path = src/fls_sonar_proc
+	url = https://github.com/jakebonney10/fls_sonar_proc.git
