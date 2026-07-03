@@ -37,3 +37,6 @@
 [submodule "src/fls_sonar_proc"]
 	path = src/fls_sonar_proc
 	url = https://github.com/jakebonney10/fls_sonar_proc.git
+[submodule "src/marine_colormap"]
+	path = src/marine_colormap
+	url = https://github.com/rolker/marine_colormap.git
