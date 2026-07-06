@@ -13,9 +13,6 @@
 [submodule "src/rhody"]
 	path = src/rhody
 	url = https://github.com/jakebonney10/rhody.git
-[submodule "src/ros2sonic"]
-	path = src/ros2sonic
-	url = https://github.com/SeawardScience/ros2sonic.git
 [submodule "src/acoustic_msgs_tools"]
 	path = src/acoustic_msgs_tools
 	url = https://github.com/k2oceanic/acoustic_msgs_tools.git
