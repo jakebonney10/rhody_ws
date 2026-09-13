@@ -37,3 +37,6 @@
 [submodule "src/marine_colormap"]
 	path = src/marine_colormap
 	url = https://github.com/rolker/marine_colormap.git
+[submodule "src/sprintnav_driver"]
+	path = src/sprintnav_driver
+	url = https://github.com/jakebonney10/sprintnav_driver.git
