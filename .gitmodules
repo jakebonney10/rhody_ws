@@ -40,3 +40,6 @@
 [submodule "src/sprintnav_driver"]
 	path = src/sprintnav_driver
 	url = https://github.com/jakebonney10/sprintnav_driver.git
+[submodule "src/hydroport"]
+	path = src/hydroport
+	url = https://github.com/SeawardScience/hydroport.git
