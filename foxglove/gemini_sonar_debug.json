@@ -1,0 +1,615 @@
+{
+  "configById": {
+    "3D!gemfan": {
+      "followTf": "gemini_fls",
+      "fixedFrame": "gemini_fls",
+      "followMode": "follow-pose",
+      "topics": {
+        "/foxglove_script/gemini_fan": {
+          "visible": true,
+          "colorMode": "colormap",
+          "colorMap": "turbo",
+          "colorField": "intensity",
+          "minValue": 20,
+          "maxValue": 140,
+          "pointSize": 2,
+          "decayTime": 0
+        }
+      },
+      "transforms": {
+        "frame:gemini_fls": {
+          "visible": true
+        },
+        "frame:base_link": {
+          "visible": false
+        },
+        "frame:base_link_frd": {
+          "visible": false
+        },
+        "frame:map": {
+          "visible": false
+        },
+        "frame:map_ned": {
+          "visible": false
+        },
+        "frame:odom": {
+          "visible": false
+        },
+        "frame:odom_ned": {
+          "visible": false
+        }
+      },
+      "layers": {
+        "gem-grid": {
+          "instanceId": "gem-grid",
+          "layerId": "foxglove.Grid",
+          "label": "Grid",
+          "visible": true,
+          "size": 20,
+          "divisions": 20
+        }
+      },
+      "cameraState": {
+        "perspective": false,
+        "distance": 26,
+        "phi": 0,
+        "thetaOffset": -90,
+        "fovy": 45,
+        "near": 0.05,
+        "far": 300,
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "scene": {
+        "backgroundColor": "#0b1014",
+        "transforms": {
+          "visible": true,
+          "showLabel": true,
+          "axisSize": 0.5
+        }
+      },
+      "foxglovePanelTitle": "Sonar Fan (point cloud)"
+    },
+    "Image!gembscan": {
+      "imageMode": {
+        "imageTopic": "/foxglove_script/gemini_bscan",
+        "imageSchemaName": "foxglove.RawImage",
+        "rectifyImage": false,
+        "rotation": 0,
+        "colorMode": "colormap",
+        "colorMap": "turbo",
+        "minValue": 0,
+        "maxValue": 255
+      },
+      "foxglovePanelTitle": "B-Scan (rows = range, cols = bearing)"
+    },
+    "Plot!gemrate": {
+      "paths": [
+        {
+          "value": "/foxglove_script/gemini_ping_stats.ping_rate_hz",
+          "enabled": true,
+          "label": "ping rate (Hz)",
+          "timestampMethod": "receiveTime",
+          "color": "#2ca02c"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.ping_interval_ms",
+          "enabled": true,
+          "label": "interval (ms)",
+          "timestampMethod": "receiveTime",
+          "color": "#ff7f0e",
+          "yAxisId": "ms"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 60,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showYAxisGridLines": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "floatingLegendPosition": "top-left",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "foxglovePanelTitle": "Ping Rate",
+      "yAxisLabel": "Hz",
+      "secondaryAxes": [
+        {
+          "id": "ms",
+          "label": "ms"
+        }
+      ]
+    },
+    "DiagnosticSummary!gemdiagsum": {
+      "topicToRender": "/diagnostics",
+      "minLevel": 0,
+      "sortByLevel": true,
+      "secondsUntilStale": 5,
+      "hardwareIdFilter": "gemini_sonar",
+      "pinnedIds": [
+        "|gemini_sonar|gemini_sonar_driver: Streaming|"
+      ],
+      "foxglovePanelTitle": "Gemini Diagnostics (summary)"
+    },
+    "DiagnosticStatusPanel!gemdiag": {
+      "topicToRender": "/diagnostics",
+      "selectedHardwareId": "gemini_sonar",
+      "selectedName": "gemini_sonar_driver: Streaming",
+      "splitFraction": 0.5,
+      "numericPrecision": 3,
+      "secondsUntilStale": 5,
+      "foxglovePanelTitle": "Streaming Detail"
+    },
+    "StateTransitions!gemflags": {
+      "paths": [
+        {
+          "value": "/rhody/perception/sensors/gemini/status.out_of_water",
+          "label": "out_of_water",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "customStates": {
+            "type": "discrete",
+            "states": [
+              {
+                "value": true,
+                "label": "OUT OF WATER",
+                "color": "#d62728"
+              },
+              {
+                "value": false,
+                "label": "submerged",
+                "color": "#2ca02c"
+              }
+            ]
+          }
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/status.over_temperature",
+          "label": "over_temperature",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "customStates": {
+            "type": "discrete",
+            "states": [
+              {
+                "value": true,
+                "label": "OVER TEMP",
+                "color": "#d62728"
+              },
+              {
+                "value": false,
+                "label": "ok",
+                "color": "#2ca02c"
+              }
+            ]
+          }
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/status.bootloader_mode",
+          "label": "bootloader_mode",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "customStates": {
+            "type": "discrete",
+            "states": [
+              {
+                "value": true,
+                "label": "BOOTLOADER",
+                "color": "#d62728"
+              },
+              {
+                "value": false,
+                "label": "normal",
+                "color": "#2ca02c"
+              }
+            ]
+          }
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/status.shutdown_status",
+          "label": "shutdown_status",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/status.boot_status",
+          "label": "boot_status",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/status.surface_ip",
+          "label": "surface_ip (head owner)",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "isSynced": true,
+      "timeWindowMode": "sliding",
+      "xAxisRange": 120,
+      "showPoints": false,
+      "foxglovePanelTitle": "Head Health Flags"
+    },
+    "RosOut!gemlog": {
+      "topicToRender": "/rosout",
+      "minLogLevel": 2,
+      "searchTerms": [],
+      "fontSize": 12,
+      "showLevel": true,
+      "showTime": true,
+      "showName": true,
+      "showDate": false,
+      "showTimezone": false,
+      "showSourceLocation": false,
+      "foxglovePanelTitle": "Node Log (INFO+)"
+    },
+    "TransformTree!gemtftree": {},
+    "Plot!gemgeom": {
+      "paths": [
+        {
+          "value": "/foxglove_script/gemini_ping_stats.range_bin_m",
+          "enabled": true,
+          "label": "range bin (m)",
+          "timestampMethod": "receiveTime",
+          "color": "#1f77b4"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.range_max_m",
+          "enabled": true,
+          "label": "range max (m)",
+          "timestampMethod": "receiveTime",
+          "color": "#d62728",
+          "yAxisId": "m"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.range_min_m",
+          "enabled": true,
+          "label": "range min (m)",
+          "timestampMethod": "receiveTime",
+          "color": "#9467bd",
+          "yAxisId": "m"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 60,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showYAxisGridLines": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "floatingLegendPosition": "top-left",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "foxglovePanelTitle": "Range Geometry",
+      "yAxisLabel": "bin (m)",
+      "secondaryAxes": [
+        {
+          "id": "m",
+          "label": "range (m)"
+        }
+      ]
+    },
+    "Plot!gemsound": {
+      "paths": [
+        {
+          "value": "/rhody/perception/sensors/gemini/raw_sonar_image.ping_info.sound_speed",
+          "enabled": true,
+          "label": "sound speed (m/s)",
+          "timestampMethod": "receiveTime",
+          "color": "#1f77b4"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.frequency_khz",
+          "enabled": true,
+          "label": "frequency (kHz)",
+          "timestampMethod": "receiveTime",
+          "color": "#ff7f0e",
+          "yAxisId": "khz"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 60,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showYAxisGridLines": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "floatingLegendPosition": "top-left",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "foxglovePanelTitle": "Sound Speed / Frequency",
+      "yAxisLabel": "m/s",
+      "secondaryAxes": [
+        {
+          "id": "khz",
+          "label": "kHz"
+        }
+      ]
+    },
+    "Plot!gembeams": {
+      "paths": [
+        {
+          "value": "/foxglove_script/gemini_ping_stats.beam_count",
+          "enabled": true,
+          "label": "beam_count",
+          "timestampMethod": "receiveTime",
+          "color": "#2ca02c"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.samples_per_beam",
+          "enabled": true,
+          "label": "samples_per_beam",
+          "timestampMethod": "receiveTime",
+          "color": "#1f77b4"
+        },
+        {
+          "value": "/foxglove_script/gemini_ping_stats.image_bytes",
+          "enabled": true,
+          "label": "image bytes",
+          "timestampMethod": "receiveTime",
+          "color": "#8c564b",
+          "yAxisId": "by"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 60,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showYAxisGridLines": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "floatingLegendPosition": "top-left",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "foxglovePanelTitle": "Beams / Samples / Payload",
+      "secondaryAxes": [
+        {
+          "id": "by",
+          "label": "bytes"
+        }
+      ]
+    },
+    "Plot!gemdisk": {
+      "paths": [
+        {
+          "value": "/rhody/perception/sensors/gemini/logger_status.percent_disk_space_free",
+          "enabled": true,
+          "label": "disk free (%)",
+          "timestampMethod": "receiveTime",
+          "color": "#2ca02c"
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/logger_status.recording_time_left_secs",
+          "enabled": true,
+          "label": "rec time left (s)",
+          "timestampMethod": "receiveTime",
+          "color": "#ff7f0e",
+          "yAxisId": "s"
+        },
+        {
+          "value": "/rhody/perception/sensors/gemini/logger_status.file_size_bytes",
+          "enabled": true,
+          "label": "file size (bytes)",
+          "timestampMethod": "receiveTime",
+          "color": "#8c564b",
+          "yAxisId": "by"
+        }
+      ],
+      "xAxisVal": "timestamp",
+      "timeWindowMode": "sliding",
+      "followingViewWidth": 60,
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showYAxisGridLines": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "floatingLegendPosition": "top-left",
+      "showPlotValuesInLegend": true,
+      "isSynced": true,
+      "foxglovePanelTitle": "Logger Disk / Time Left",
+      "yAxisLabel": "%",
+      "minYValue": 0,
+      "maxYValue": 100,
+      "secondaryAxes": [
+        {
+          "id": "s",
+          "label": "seconds"
+        }
+      ]
+    },
+    "RawMessages!gemstats": {
+      "topicPath": "/foxglove_script/gemini_ping_stats",
+      "fontSize": 12,
+      "defaultExpanded": false,
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "foxglovePanelTitle": "Derived Ping Stats"
+    },
+    "RawMessages!gemstatus": {
+      "topicPath": "/rhody/perception/sensors/gemini/status",
+      "fontSize": 12,
+      "defaultExpanded": false,
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "foxglovePanelTitle": "Gemini Status"
+    },
+    "RawMessages!gemlogger": {
+      "topicPath": "/rhody/perception/sensors/gemini/logger_status",
+      "fontSize": 12,
+      "defaultExpanded": false,
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "foxglovePanelTitle": "Logger Status"
+    },
+    "RawMessages!gemraw": {
+      "topicPath": "/rhody/perception/sensors/gemini/raw_sonar_image",
+      "fontSize": 12,
+      "defaultExpanded": false,
+      "diffEnabled": false,
+      "diffMethod": "custom",
+      "diffTopicPath": "",
+      "showFullMessageForDiff": false,
+      "foxglovePanelTitle": "Raw Sonar Image (collapsed)"
+    },
+    "CallService!gemstart": {
+      "serviceName": "/rhody/perception/sensors/gemini/start_sonar",
+      "requestPayload": "{\n  \"enable_logging\": false,\n  \"log_directory\": \"\"\n}",
+      "layout": "vertical",
+      "buttonText": "Start sonar",
+      "buttonColor": "#2ca02c",
+      "editingMode": true,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Start Sonar"
+    },
+    "CallService!gemstop": {
+      "serviceName": "/rhody/perception/sensors/gemini/stop_sonar",
+      "requestPayload": "{\n  \"save_configuration\": true\n}",
+      "layout": "vertical",
+      "buttonText": "Stop sonar",
+      "buttonColor": "#d62728",
+      "editingMode": true,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Stop Sonar"
+    },
+    "Parameters!gemparams": {},
+    "Tab!gemtabs": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Perception",
+          "layout": {
+            "direction": "row",
+            "first": "3D!gemfan",
+            "second": {
+              "direction": "column",
+              "first": "Image!gembscan",
+              "second": "Plot!gemrate",
+              "splitPercentage": 62
+            },
+            "splitPercentage": 58
+          }
+        },
+        {
+          "title": "Health",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "DiagnosticSummary!gemdiagsum",
+              "second": "DiagnosticStatusPanel!gemdiag",
+              "splitPercentage": 45
+            },
+            "second": {
+              "direction": "column",
+              "first": "StateTransitions!gemflags",
+              "second": {
+                "direction": "row",
+                "first": "RosOut!gemlog",
+                "second": "TransformTree!gemtftree",
+                "splitPercentage": 65
+              },
+              "splitPercentage": 45
+            },
+            "splitPercentage": 38
+          }
+        },
+        {
+          "title": "Signal",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "Plot!gemgeom",
+              "second": "Plot!gemsound",
+              "splitPercentage": 50
+            },
+            "second": {
+              "direction": "column",
+              "first": "Plot!gembeams",
+              "second": "Plot!gemdisk",
+              "splitPercentage": 50
+            },
+            "splitPercentage": 50
+          }
+        },
+        {
+          "title": "Raw & Control",
+          "layout": {
+            "direction": "row",
+            "first": {
+              "direction": "column",
+              "first": "RawMessages!gemstats",
+              "second": "RawMessages!gemraw",
+              "splitPercentage": 45
+            },
+            "second": {
+              "direction": "column",
+              "first": {
+                "direction": "row",
+                "first": "RawMessages!gemstatus",
+                "second": "RawMessages!gemlogger",
+                "splitPercentage": 50
+              },
+              "second": {
+                "direction": "row",
+                "first": {
+                  "direction": "column",
+                  "first": "CallService!gemstart",
+                  "second": "CallService!gemstop",
+                  "splitPercentage": 50
+                },
+                "second": "Parameters!gemparams",
+                "splitPercentage": 45
+              },
+              "splitPercentage": 55
+            },
+            "splitPercentage": 42
+          }
+        }
+      ]
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {
+    "gemini_fan": {
+      "name": "Gemini Sonar Fan",
+      "sourceCode": "import { Input } from \"./types.ts\";\nimport { PointCloud, NumericType } from \"@foxglove/schemas\";\n\n// Verified against live data: the buffer is SAMPLE-major, index = sample * beam_count + beam.\n// (glf_processor.cpp's \"row-major (beam-major)\" comment is inaccurate -- it passes the\n// Gemini SDK buffer through unchanged, and the SDK packs all beams per range sample.)\nconst BEAM_MAJOR = false;\n\n// REP-103 (X forward, Y left, Z up), so the fan lies flat in the XY plane and reads\n// as a plan view. Set true for the driver's own ProjectedSonarImage convention\n// (X up, Y right, Z forward), which puts the fan in the Y-Z plane instead.\nconst DRIVER_AXES = false;\n\n// 0-255. Live distribution on this scene: median 5, p75 13, p90 53 -- 25 keeps ~16% of\n// samples and still reaches the full 10 m. Raise it to thin out water-column noise.\nconst MIN_INTENSITY = 25;\nconst BEAM_STRIDE = 2;\nconst SAMPLE_STRIDE = 4;\nconst MAX_POINTS = 120000; // 1024 beams x 2048 samples is 2M points: decimate or the panel stalls\n\nexport const inputs = [\"/rhody/perception/sensors/gemini/raw_sonar_image\"];\nexport const output = \"/foxglove_script/gemini_fan\";\n\nexport default function script(\n  event: Input<\"/rhody/perception/sensors/gemini/raw_sonar_image\">,\n): PointCloud | undefined {\n  const msg = event.message;\n  const beams = msg.image.beam_count;\n  const samples = msg.samples_per_beam;\n  if (beams === 0 || samples === 0) {\n    return;\n  }\n\n  // Range bin size: dr = c / (2 * f_sample), matching the driver's ProjectedSonarImage ranges.\n  const dr = msg.ping_info.sound_speed / (2 * msg.sample_rate);\n  if (!isFinite(dr) || dr <= 0) {\n    return;\n  }\n\n  const angles = msg.rx_angles;\n  if (angles.length < beams) {\n    return;\n  }\n\n  const src: any = msg.image.data;\n  const stride = 16; // x, y, z, intensity as float32\n  const cap = Math.min(\n    MAX_POINTS,\n    Math.ceil(beams / BEAM_STRIDE) * Math.ceil(samples / SAMPLE_STRIDE),\n  );\n  const buf = new Uint8Array(cap * stride);\n  const view = new DataView(buf.buffer);\n\n  let n = 0;\n  for (let b = 0; b < beams && n < cap; b += BEAM_STRIDE) {\n    const sinT = Math.sin(angles[b]);\n    const cosT = Math.cos(angles[b]);\n    for (let s = 0; s < samples && n < cap; s += SAMPLE_STRIDE) {\n      const intensity = src[BEAM_MAJOR ? b * samples + s : s * beams + b];\n      if (intensity === undefined || intensity < MIN_INTENSITY) {\n        continue;\n      }\n      const r = (msg.sample0 + s) * dr;\n      const o = n * stride;\n      if (DRIVER_AXES) {\n        view.setFloat32(o, 0, true);\n        view.setFloat32(o + 4, r * sinT, true);\n        view.setFloat32(o + 8, r * cosT, true);\n      } else {\n        view.setFloat32(o, r * cosT, true);\n        view.setFloat32(o + 4, -r * sinT, true);\n        view.setFloat32(o + 8, 0, true);\n      }\n      view.setFloat32(o + 12, intensity, true);\n      n++;\n    }\n  }\n\n  // ROS 2 sources expose the stamp as nanosec; keep nsec as a fallback.\n  const st: any = msg.header.stamp;\n  const cloud: PointCloud = {\n    timestamp: { sec: st.sec, nsec: st.nsec !== undefined ? st.nsec : st.nanosec },\n    frame_id: msg.header.frame_id,\n    pose: {\n      position: { x: 0, y: 0, z: 0 },\n      orientation: { x: 0, y: 0, z: 0, w: 1 },\n    },\n    point_stride: stride,\n    fields: [\n      { name: \"x\", offset: 0, type: NumericType.FLOAT32 },\n      { name: \"y\", offset: 4, type: NumericType.FLOAT32 },\n      { name: \"z\", offset: 8, type: NumericType.FLOAT32 },\n      { name: \"intensity\", offset: 12, type: NumericType.FLOAT32 },\n    ],\n    data: buf.slice(0, n * stride),\n  };\n  return cloud;\n}\n"
+    },
+    "gemini_bscan": {
+      "name": "Gemini B-Scan",
+      "sourceCode": "import { Input } from \"./types.ts\";\nimport { RawImage } from \"@foxglove/schemas\";\n\n// Verified against live data: the buffer is SAMPLE-major, index = sample * beam_count + beam,\n// so one row per range sample -- width is bearing, height is range.\nconst BEAM_MAJOR = false;\n\nexport const inputs = [\"/rhody/perception/sensors/gemini/raw_sonar_image\"];\nexport const output = \"/foxglove_script/gemini_bscan\";\n\nexport default function script(\n  event: Input<\"/rhody/perception/sensors/gemini/raw_sonar_image\">,\n): RawImage | undefined {\n  const msg = event.message;\n  const beams = msg.image.beam_count;\n  const samples = msg.samples_per_beam;\n  if (beams === 0 || samples === 0) {\n    return;\n  }\n\n  const width = BEAM_MAJOR ? samples : beams;\n  const height = BEAM_MAJOR ? beams : samples;\n\n  const src: any = msg.image.data;\n  const bytes: Uint8Array = src instanceof Uint8Array ? src : new Uint8Array(src);\n  const need = width * height;\n  if (bytes.length < need) {\n    return;\n  }\n\n  // ROS 2 sources expose the stamp as nanosec; keep nsec as a fallback.\n  const st: any = msg.header.stamp;\n  const image: RawImage = {\n    timestamp: { sec: st.sec, nsec: st.nsec !== undefined ? st.nsec : st.nanosec },\n    frame_id: msg.header.frame_id,\n    width: width,\n    height: height,\n    encoding: \"mono8\",\n    step: width,\n    data: bytes.length === need ? bytes : bytes.slice(0, need),\n  };\n  return image;\n}\n"
+    },
+    "gemini_ping_stats": {
+      "name": "Gemini Ping Stats",
+      "sourceCode": "import { Input } from \"./types.ts\";\n\n// Ping rate and the range geometry that the message only carries implicitly.\n// Module state is per script instance, and the player runs two (frame + range),\n// so treat the rate as an estimate rather than an exact count.\nlet lastStamp: number | undefined = undefined;\n\ntype PingStats = {\n  ping_rate_hz: number;\n  ping_interval_ms: number;\n  range_bin_m: number;\n  range_min_m: number;\n  range_max_m: number;\n  beam_count: number;\n  samples_per_beam: number;\n  image_bytes: number;\n  sound_speed_ms: number;\n  frequency_khz: number;\n};\n\nexport const inputs = [\"/rhody/perception/sensors/gemini/raw_sonar_image\"];\nexport const output = \"/foxglove_script/gemini_ping_stats\";\n\nexport default function script(\n  event: Input<\"/rhody/perception/sensors/gemini/raw_sonar_image\">,\n): PingStats | undefined {\n  const msg = event.message;\n  const st: any = msg.header.stamp;\n  const nsec = st.nsec !== undefined ? st.nsec : st.nanosec;\n  const now = st.sec + nsec * 1e-9;\n\n  const prev = lastStamp;\n  lastStamp = now;\n  if (prev === undefined) {\n    return; // no interval to report on the first ping\n  }\n\n  const dt = now - prev;\n  if (!isFinite(dt) || dt <= 0) {\n    return;\n  }\n\n  const dr = msg.ping_info.sound_speed / (2 * msg.sample_rate);\n  const binSize = isFinite(dr) && dr > 0 ? dr : 0;\n\n  return {\n    ping_rate_hz: 1 / dt,\n    ping_interval_ms: dt * 1000,\n    range_bin_m: binSize,\n    range_min_m: msg.sample0 * binSize,\n    range_max_m: (msg.sample0 + msg.samples_per_beam) * binSize,\n    beam_count: msg.image.beam_count,\n    samples_per_beam: msg.samples_per_beam,\n    image_bytes: msg.image.data.length,\n    sound_speed_ms: msg.ping_info.sound_speed,\n    frequency_khz: msg.ping_info.frequency / 1000,\n  };\n}\n"
+    }
+  },
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": "Tab!gemtabs"
+}
