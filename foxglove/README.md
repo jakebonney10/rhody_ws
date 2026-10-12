@@ -84,3 +84,25 @@ Panels use the namespaced topics the node actually publishes —
 `/rhody/perception/sensors/gemini/...` (the node runs with
 `__ns:=/rhody/perception/sensors`). The bare `/gemini/...` names have zero
 publishers.
+
+---
+
+# hydroport logging layout
+
+`hydroport_logging.json` — operator view for the hydroport MCAP bag recorder
+(`rhody-hydroport.service`, node `/rhody/data/bag_recorder`). One screen, no scripts.
+
+| Panel | Shows |
+| --- | --- |
+| **Recorder state** | `/rhody/data/bag_recorder/logging_on` — green RECORDING / amber NOT RECORDING |
+| **Commanded** | `/rhody/data/logging_on` as last latched by an operator |
+| **Start / Stop logging** | Publish `std_msgs/msg/Bool` true / false on `/rhody/data/logging_on` |
+| **Timeline** | Commanded vs. actual state over time |
+| **MCAP Logger status** | The recorder's `/diagnostics` entry (`mcap_logger` / `MCAP Logger`): topic count and path, or the settings error |
+| **All diagnostics** | Every driver's status, i.e. whether the things being recorded are healthy |
+| **Recorder log** | `/rosout` at INFO and above, with the chatty `foxglove_bridge` and `voyis_discovery` nodes hidden (the panel can only hide named nodes, not whitelist) |
+| **Parameters** | Live edit of `logging.directory`, `logging.file_prefix`, `topic_ignore_regex`, split length |
+
+The recorder's control subscription is RELIABLE + TRANSIENT_LOCAL. `foxglove_bridge`
+3.5.0 advertises client publishers on that topic as RELIABLE + TRANSIENT_LOCAL too
+(checked with `ros2 topic info -v` on 2026-10-09), so the buttons are QoS-compatible.

@@ -1,6 +1,12 @@
 [submodule "src/nucleus_driver"]
 	path = src/nucleus_driver
 	url = https://github.com/jakebonney10/nucleus_driver.git
+	# feature/streaming_only, not the default jazzy-devel: the pinned commit
+	# (f8bde36) is what adds the configurable TCP port and listen-only mode
+	# that rhody-nucleus.service depends on, and it is not merged to
+	# jazzy-devel. Without this, submodule update --remote would silently
+	# move the pin back and break listen-only mode.
+	branch = feature/streaming_only
 [submodule "src/project11/project11_msgs"]
 	path = src/project11/project11_msgs
 	url = https://github.com/rolker/project11_msgs.git
@@ -43,3 +49,6 @@
 [submodule "src/hydroport"]
 	path = src/hydroport
 	url = https://github.com/SeawardScience/hydroport.git
+	# devel, not the default master: master is the upstream package
+	# template and contains no hydroport package at all.
+	branch = devel

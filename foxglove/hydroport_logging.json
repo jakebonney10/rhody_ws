@@ -1,0 +1,181 @@
+{
+  "configById": {
+    "Indicator!hpstate": {
+      "path": "/rhody/data/bag_recorder/logging_on.data",
+      "style": "background",
+      "fontSize": 28,
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "true",
+          "color": "#2ca02c",
+          "label": "RECORDING"
+        }
+      ],
+      "fallbackColor": "#c77700",
+      "fallbackLabel": "NOT RECORDING",
+      "foxglovePanelTitle": "Recorder state"
+    },
+    "Indicator!hpcmd": {
+      "path": "/rhody/data/logging_on.data",
+      "style": "background",
+      "fontSize": 28,
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "true",
+          "color": "#1f77b4",
+          "label": "ON requested"
+        }
+      ],
+      "fallbackColor": "#666666",
+      "fallbackLabel": "OFF / no command",
+      "foxglovePanelTitle": "Commanded (logging_on)"
+    },
+    "Publish!hpstart": {
+      "topicName": "/rhody/data/logging_on",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "Start logging",
+      "buttonTooltip": "Latch true on /rhody/data/logging_on",
+      "buttonColor": "#2ca02c",
+      "advancedView": false,
+      "value": "{\n  \"data\": true\n}",
+      "foxglovePanelTitle": "Start logging"
+    },
+    "Publish!hpstop": {
+      "topicName": "/rhody/data/logging_on",
+      "datatype": "std_msgs/msg/Bool",
+      "buttonText": "Stop logging",
+      "buttonTooltip": "Latch false on /rhody/data/logging_on (closes and flushes the bag)",
+      "buttonColor": "#d62728",
+      "advancedView": false,
+      "value": "{\n  \"data\": false\n}",
+      "foxglovePanelTitle": "Stop logging"
+    },
+    "StateTransitions!hptimeline": {
+      "paths": [
+        {
+          "value": "/rhody/data/bag_recorder/logging_on.data",
+          "label": "recording",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        },
+        {
+          "value": "/rhody/data/logging_on.data",
+          "label": "commanded",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "isSynced": true,
+      "timeWindowMode": "automatic",
+      "showPoints": true,
+      "foxglovePanelTitle": "Logging on/off timeline"
+    },
+    "DiagnosticStatusPanel!hpdiag": {
+      "topicToRender": "/diagnostics",
+      "selectedHardwareId": "mcap_logger",
+      "selectedName": "MCAP Logger",
+      "splitFraction": 0.5,
+      "secondsUntilStale": 5,
+      "foxglovePanelTitle": "MCAP Logger status"
+    },
+    "DiagnosticSummary!hpsummary": {
+      "topicToRender": "/diagnostics",
+      "minLevel": 0,
+      "hardwareIdFilter": "",
+      "sortByLevel": true,
+      "secondsUntilStale": 5,
+      "pinnedIds": [
+        "|mcap_logger|MCAP Logger|"
+      ],
+      "foxglovePanelTitle": "All diagnostics (what is being recorded)"
+    },
+    "RosOut!hplog": {
+      "topicToRender": "/rosout",
+      "minLogLevel": 2,
+      "searchTerms": [],
+      "nameFilter": {
+        "rhody.data.bag_recorder": {
+          "visible": true
+        },
+        "bag_recorder_inner": {
+          "visible": true
+        },
+        "foxglove_bridge": {
+          "visible": false
+        },
+        "rhody.perception.sensors.voyis.voyis_discovery": {
+          "visible": false
+        }
+      },
+      "showLevel": true,
+      "showDate": false,
+      "showTime": true,
+      "showTimezone": false,
+      "showName": true,
+      "showSourceLocation": false,
+      "foxglovePanelTitle": "Recorder log"
+    },
+    "Parameters!hpparams": {
+      "foxglovePanelTitle": "Parameters (/rhody/data/bag_recorder)"
+    },
+    "Markdown!hpnotes": {
+      "renderMode": "static",
+      "fontSize": 13,
+      "markdown": "### hydroport bag recorder\n\nService `rhody-hydroport.service` (user unit) runs `hydroport/bag_recorder` as `/rhody/data/bag_recorder`. It starts **idle** and records nothing until `true` is latched on `/rhody/data/logging_on`.\n\n- **Bags:** `~/data/rhody_mcap/rhody_<UTC stamp>/`, mcap + zstd_fast, split every 900 s\n- **Records:** every topic except `/__*` and `/parameter_events`\n- **Recorder state** green = a bag is open. Commanded ON while state stays amber = settings error; read *MCAP Logger status* (ERROR names the bad directory / prefix).\n- **Live changes:** set `logging.directory`, `logging.file_prefix`, `topic_ignore_regex`, `max_bag_duration_seconds` in the Parameters panel; the recorder restarts onto a new bag if logging is commanded on.\n\nShell equivalent:\n\n```\nros2 topic pub --once --qos-durability transient_local --qos-reliability reliable /rhody/data/logging_on std_msgs/msg/Bool \"{data: true}\"\n```",
+      "foxglovePanelTitle": "Notes"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "direction": "column",
+    "splitPercentage": 20,
+    "first": {
+      "direction": "row",
+      "splitPercentage": 60,
+      "first": {
+        "direction": "row",
+        "splitPercentage": 55,
+        "first": "Indicator!hpstate",
+        "second": "Indicator!hpcmd"
+      },
+      "second": {
+        "direction": "row",
+        "splitPercentage": 50,
+        "first": "Publish!hpstart",
+        "second": "Publish!hpstop"
+      }
+    },
+    "second": {
+      "direction": "column",
+      "splitPercentage": 18,
+      "first": "StateTransitions!hptimeline",
+      "second": {
+        "direction": "row",
+        "splitPercentage": 40,
+        "first": {
+          "direction": "column",
+          "splitPercentage": 45,
+          "first": "DiagnosticStatusPanel!hpdiag",
+          "second": "DiagnosticSummary!hpsummary"
+        },
+        "second": {
+          "direction": "column",
+          "splitPercentage": 50,
+          "first": "RosOut!hplog",
+          "second": {
+            "direction": "row",
+            "splitPercentage": 55,
+            "first": "Parameters!hpparams",
+            "second": "Markdown!hpnotes"
+          }
+        }
+      }
+    }
+  }
+}
