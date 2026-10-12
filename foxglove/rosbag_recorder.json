@@ -1,0 +1,321 @@
+{
+  "configById": {
+    "Indicator!rbstate": {
+      "path": "/foxglove_script/rosbag_state.state",
+      "style": "background",
+      "fontSize": 22,
+      "rules": [
+        {
+          "operator": "=",
+          "rawValue": "RECORDING",
+          "color": "#2ca02c",
+          "label": "RECORDING"
+        },
+        {
+          "operator": "=",
+          "rawValue": "PAUSED",
+          "color": "#c77700",
+          "label": "PAUSED (last logged)"
+        },
+        {
+          "operator": "=",
+          "rawValue": "STOPPED",
+          "color": "#d62728",
+          "label": "STOPPED (bag closed)"
+        }
+      ],
+      "fallbackColor": "#666666",
+      "fallbackLabel": "No recorder event seen - query is_paused",
+      "foxglovePanelTitle": "Last logged recorder state (/rosout)"
+    },
+    "CallService!rbresume": {
+      "serviceName": "/rhody/data/rosbag2_recorder/resume",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Resume (start writing)",
+      "buttonTooltip": "rosbag2_interfaces/srv/Resume: start writing into the open bag",
+      "buttonColor": "#2ca02c",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Resume"
+    },
+    "CallService!rbpause": {
+      "serviceName": "/rhody/data/rosbag2_recorder/pause",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Pause (stop writing)",
+      "buttonTooltip": "rosbag2_interfaces/srv/Pause: stop writing, keep the bag open",
+      "buttonColor": "#c77700",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Pause"
+    },
+    "CallService!rbispaused": {
+      "serviceName": "/rhody/data/rosbag2_recorder/is_paused",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Query is_paused",
+      "buttonTooltip": "rosbag2_interfaces/srv/IsPaused: the node's own answer",
+      "buttonColor": "#1f77b4",
+      "editingMode": true,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Is paused? (ask the node)"
+    },
+    "StateTransitions!rbtimeline": {
+      "paths": [
+        {
+          "value": "/foxglove_script/rosbag_state.state",
+          "label": "recorder",
+          "enabled": true,
+          "timestampMethod": "receiveTime",
+          "customStates": {
+            "type": "discrete",
+            "states": [
+              {
+                "value": "RECORDING",
+                "label": "Recording",
+                "color": "#2ca02c"
+              },
+              {
+                "value": "PAUSED",
+                "label": "Paused",
+                "color": "#c77700"
+              },
+              {
+                "value": "STOPPED",
+                "label": "Stopped",
+                "color": "#d62728"
+              },
+              {
+                "value": "UNKNOWN",
+                "label": "Unknown",
+                "color": "#666666"
+              }
+            ]
+          }
+        }
+      ],
+      "isSynced": true,
+      "timeWindowMode": "automatic",
+      "showPoints": false,
+      "foxglovePanelTitle": "Recorder state timeline"
+    },
+    "RawMessages!rbstats": {
+      "topicPath": "/foxglove_script/rosbag_state",
+      "fontSize": 12,
+      "expansion": "all",
+      "foxglovePanelTitle": "Recorder stats (bag, topics, splits, last event)"
+    },
+    "DiagnosticSummary!rbdiag": {
+      "topicToRender": "/diagnostics",
+      "minLevel": 0,
+      "hardwareIdFilter": "",
+      "sortByLevel": true,
+      "secondsUntilStale": 5,
+      "pinnedIds": [],
+      "foxglovePanelTitle": "Driver diagnostics (what is being recorded)"
+    },
+    "RosOut!rblog": {
+      "topicToRender": "/rosout",
+      "minLogLevel": 2,
+      "searchTerms": [],
+      "nameFilter": {
+        "rhody.data.rosbag2_recorder": {
+          "visible": true
+        },
+        "foxglove_bridge": {
+          "visible": false
+        },
+        "rhody.perception.sensors.voyis.voyis_discovery": {
+          "visible": false
+        },
+        "rhody.nav.sensors.adnav": {
+          "visible": false
+        },
+        "rhody.mavros.time": {
+          "visible": false
+        },
+        "rhody.mavros.global_position": {
+          "visible": false
+        },
+        "rhody.perception.sensors.gemini_sonar_driver": {
+          "visible": false
+        }
+      },
+      "showLevel": true,
+      "showDate": false,
+      "showTime": true,
+      "showTimezone": false,
+      "showName": true,
+      "showSourceLocation": false,
+      "foxglovePanelTitle": "Recorder log (/rosout)"
+    },
+    "Tab!rbadv": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Notes",
+          "layout": "Markdown!rbnotes"
+        },
+        {
+          "title": "Parameters",
+          "layout": "Parameters!rbparams"
+        },
+        {
+          "title": "Bag ops",
+          "layout": {
+            "direction": "row",
+            "splitPercentage": 33,
+            "first": "CallService!rbsplit",
+            "second": {
+              "direction": "row",
+              "splitPercentage": 50,
+              "first": "CallService!rbstop",
+              "second": "CallService!rbrecord"
+            }
+          }
+        },
+        {
+          "title": "Discovery",
+          "layout": {
+            "direction": "row",
+            "splitPercentage": 33,
+            "first": "CallService!rbdiscq",
+            "second": {
+              "direction": "row",
+              "splitPercentage": 50,
+              "first": "CallService!rbdiscstart",
+              "second": "CallService!rbdiscstop"
+            }
+          }
+        }
+      ]
+    },
+    "Markdown!rbnotes": {
+      "renderMode": "static",
+      "fontSize": 13,
+      "markdown": "### rosbag2 recorder\n\n`rhody-rosbag.service` (user unit) runs the stock rosbag2 recorder as `/rhody/data/rosbag2_recorder`. It opens **one bag directory per service start** (`~/data/rhody_mcap/rhody_<UTC stamp>/`, mcap + zstd_fast, 900 s splits) and comes up **paused**: nothing is written until **Resume** is pressed.\n\n- **Resume / Pause** call the node's `resume` / `pause` services (request `{}`). Pause keeps the bag open; Resume writes into the same bag again.\n- **Recorder state** is derived from the recorder's `/rosout` lines (user script `rosbag_state`), so it reads UNKNOWN until the first pause/resume or recorder restart seen since Foxglove connected. **Query is_paused** asks the node directly.\n- **Known gap:** rosbag2 0.26 logs *Pausing recording.* at INFO but a real resume only at DEBUG (`Already in the recording.`; the upstream messages are swapped), so after **Resume** the indicator stays PAUSED until the next pause. Fix at the source: add `--log-level rhody.data.rosbag2_recorder:=debug` to the `--ros-args` in `~/.config/systemd/user/rhody_rosbag.sh` and restart the unit (opens a new bag); the script already understands that line.\n- **Bag ops > Stop** closes the bag (flushes, writes `metadata.yaml`). After Stop, **Record** needs a *new* `uri` or the node refuses because the directory exists. A fresh bag per dive is normally just `systemctl --user restart rhody-rosbag.service`.\n- **Split bag now** closes the current `.mcap` and opens the next one immediately.\n- The recorder publishes nothing on `/diagnostics`; the diagnostics list shows the *drivers* being recorded.\n- The old hydroport `/rhody/data/logging_on` topic does nothing for this recorder.\n\nShell equivalents:\n\n```\nros2 service call /rhody/data/rosbag2_recorder/resume    rosbag2_interfaces/srv/Resume\nros2 service call /rhody/data/rosbag2_recorder/pause     rosbag2_interfaces/srv/Pause\nros2 service call /rhody/data/rosbag2_recorder/is_paused rosbag2_interfaces/srv/IsPaused\n```",
+      "foxglovePanelTitle": "Notes"
+    },
+    "Parameters!rbparams": {
+      "foxglovePanelTitle": "Parameters (/rhody/data/rosbag2_recorder)"
+    },
+    "CallService!rbsplit": {
+      "serviceName": "/rhody/data/rosbag2_recorder/split_bagfile",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Split bag now",
+      "buttonTooltip": "rosbag2_interfaces/srv/SplitBagfile: close the current .mcap and open the next",
+      "buttonColor": "#1f77b4",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Split bag"
+    },
+    "CallService!rbstop": {
+      "serviceName": "/rhody/data/rosbag2_recorder/stop",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Stop recording (closes bag)",
+      "buttonTooltip": "rosbag2_interfaces/srv/Stop: flush and close the bag, write metadata.yaml",
+      "buttonColor": "#d62728",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Stop"
+    },
+    "CallService!rbrecord": {
+      "serviceName": "/rhody/data/rosbag2_recorder/record",
+      "requestPayload": "{\n  \"uri\": \"/home/rhody/data/rhody_mcap/rhody_manual_1\"\n}",
+      "layout": "vertical",
+      "buttonText": "Record to new uri",
+      "buttonTooltip": "rosbag2_interfaces/srv/Record: after Stop, start a new bag at uri (must not exist)",
+      "buttonColor": "#2ca02c",
+      "editingMode": true,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Record (after Stop)"
+    },
+    "CallService!rbdiscq": {
+      "serviceName": "/rhody/data/rosbag2_recorder/is_discovery_running",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Query discovery",
+      "buttonTooltip": "rosbag2_interfaces/srv/IsDiscoveryRunning",
+      "buttonColor": "#1f77b4",
+      "editingMode": true,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Discovery running?"
+    },
+    "CallService!rbdiscstart": {
+      "serviceName": "/rhody/data/rosbag2_recorder/start_discovery",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Start discovery",
+      "buttonTooltip": "rosbag2_interfaces/srv/StartDiscovery: resume picking up new topics",
+      "buttonColor": "#2ca02c",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Start discovery"
+    },
+    "CallService!rbdiscstop": {
+      "serviceName": "/rhody/data/rosbag2_recorder/stop_discovery",
+      "requestPayload": "{}",
+      "layout": "vertical",
+      "buttonText": "Stop discovery",
+      "buttonTooltip": "rosbag2_interfaces/srv/StopDiscovery: stop subscribing to topics that appear later",
+      "buttonColor": "#c77700",
+      "editingMode": false,
+      "timeoutSeconds": 10,
+      "foxglovePanelTitle": "Stop discovery"
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {
+    "rosbag_state": {
+      "name": "rosbag_state",
+      "sourceCode": "import { Input } from \"./types.ts\";\n\n// The stock rosbag2 recorder reports nothing about itself except its /rosout\n// lines and WriteSplitEvent, so this derives its state from those. State is\n// only known from the first transition seen after Foxglove connected; until\n// then it is UNKNOWN and the \"Query is_paused\" button is the way to check.\n//\n// rosbag2 0.26 (Jazzy) logs \"Pausing recording.\" at INFO but a real resume\n// only at DEBUG (\"Already in the recording.\" - the two resume messages are\n// swapped upstream). RECORDING is therefore only seen when the recorder runs\n// with --log-level rhody.data.rosbag2_recorder:=debug; otherwise the state\n// stays PAUSED after a Resume until the next pause.\nconst RECORDER_LOGGER = \"rhody.data.rosbag2_recorder\"; // logger of /rhody/data/rosbag2_recorder\nconst START_PAUSED = true; // record.start_paused in rhody/config/rosbag_record.yaml\n\nexport const inputs = [\"/rosout\", \"/rhody/data/events/write_split\"];\nexport const output = \"/foxglove_script/rosbag_state\";\n\ntype Output = {\n  state: string; // RECORDING | PAUSED | STOPPED | UNKNOWN\n  recording: boolean;\n  state_known: boolean;\n  bag_uri: string;\n  topics_subscribed: number;\n  splits: number;\n  current_file: string;\n  last_closed_file: string;\n  last_event: string;\n  last_event_time: string;\n};\n\nlet state = \"UNKNOWN\";\nlet bagUri = \"\";\nlet topics = 0;\nlet splits = 0;\nlet currentFile = \"\";\nlet lastClosed = \"\";\nlet lastEvent = \"\";\nlet lastEventTime = \"\";\n\nfunction iso(t: { sec: number; nsec: number }): string {\n  return new Date(t.sec * 1000 + Math.floor(t.nsec / 1e6)).toISOString();\n}\n\nfunction note(what: string, t: { sec: number; nsec: number }): void {\n  lastEvent = what;\n  lastEventTime = iso(t);\n}\n\nexport default function script(\n  event: Input<\"/rosout\"> | Input<\"/rhody/data/events/write_split\">,\n): Output {\n  if (event.topic === \"/rosout\") {\n    const m = event.message;\n    if (m.name === RECORDER_LOGGER) {\n      const msg = m.msg;\n      if (msg.startsWith(\"Pausing recording\")) {\n        state = \"PAUSED\";\n        note(msg, m.stamp);\n      } else if (\n        msg.startsWith(\"Resuming recording\") ||\n        msg.startsWith(\"Already in the recording\")\n      ) {\n        state = \"RECORDING\";\n        note(\"Resuming recording.\", m.stamp);\n      } else if (msg.startsWith(\"Recorder is already in pause state\")) {\n        state = \"PAUSED\";\n        note(msg, m.stamp);\n      } else if (msg.startsWith(\"Recording stopped\")) {\n        state = \"STOPPED\";\n        note(msg, m.stamp);\n      } else if (msg.startsWith(\"Starting recording to '\")) {\n        // A new recorder process: everything below is per run.\n        bagUri = msg.slice(\"Starting recording to '\".length, -1);\n        state = START_PAUSED ? \"PAUSED\" : \"RECORDING\";\n        topics = 0;\n        splits = 0;\n        currentFile = \"\";\n        lastClosed = \"\";\n        note(msg, m.stamp);\n      } else if (msg.startsWith(\"Subscribed to topic\")) {\n        topics += 1;\n      } else if (m.level >= 30) {\n        note(msg, m.stamp); // WARN and above from the recorder itself\n      }\n    }\n  } else {\n    const m = event.message;\n    splits += 1;\n    currentFile = m.opened_file;\n    lastClosed = m.closed_file;\n    // WriteSplitEvent carries no stamp of its own.\n    note(\"Bag split -> \" + m.opened_file, event.receiveTime);\n  }\n  return {\n    state,\n    recording: state === \"RECORDING\",\n    state_known: state !== \"UNKNOWN\",\n    bag_uri: bagUri,\n    topics_subscribed: topics,\n    splits,\n    current_file: currentFile,\n    last_closed_file: lastClosed,\n    last_event: lastEvent,\n    last_event_time: lastEventTime,\n  };\n}\n"
+    }
+  },
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "direction": "column",
+    "splitPercentage": 22,
+    "first": {
+      "direction": "row",
+      "splitPercentage": 30,
+      "first": "Indicator!rbstate",
+      "second": {
+        "direction": "row",
+        "splitPercentage": 34,
+        "first": "CallService!rbresume",
+        "second": {
+          "direction": "row",
+          "splitPercentage": 50,
+          "first": "CallService!rbpause",
+          "second": "CallService!rbispaused"
+        }
+      }
+    },
+    "second": {
+      "direction": "column",
+      "splitPercentage": 16,
+      "first": "StateTransitions!rbtimeline",
+      "second": {
+        "direction": "row",
+        "splitPercentage": 40,
+        "first": {
+          "direction": "column",
+          "splitPercentage": 50,
+          "first": "RawMessages!rbstats",
+          "second": "DiagnosticSummary!rbdiag"
+        },
+        "second": {
+          "direction": "column",
+          "splitPercentage": 50,
+          "first": "RosOut!rblog",
+          "second": "Tab!rbadv"
+        }
+      }
+    }
+  }
+}

@@ -87,7 +87,57 @@ publishers.
 
 ---
 
-# hydroport logging layout
+# rosbag recorder layout
+
+`rosbag_recorder.json` — operator view for the stock rosbag2 MCAP recorder
+(`rhody-rosbag.service`, node `/rhody/data/rosbag2_recorder`). Live layout id
+`lay_0efR3LqsqFZCx3Un` ("Rosbag Recorder"); it replaced the hydroport layout in place on
+2026-10-12. One user script (`scripts/rosbag_state.ts`, mirrored into `userNodes`).
+
+The recorder comes up **paused** (one bag directory per service start) and is driven by
+`rosbag2_interfaces` services, not a topic — so the buttons are **Call Service** panels.
+
+| Panel | Does |
+| --- | --- |
+| **Recorder state** | RECORDING / PAUSED / STOPPED from `/foxglove_script/rosbag_state.state`; UNKNOWN until the first transition seen since connecting |
+| **Resume / Pause** | `…/resume` and `…/pause`, request `{}` |
+| **Is paused?** | `…/is_paused` — the node's own answer, shown in the panel |
+| **Timeline** | Derived state over time |
+| **Recorder stats** | Script output: bag uri, topics subscribed, splits, current/closed file, last event |
+| **Driver diagnostics** | `/diagnostics` summary — the things being recorded; the recorder itself publishes nothing there |
+| **Recorder log** | `/rosout` INFO+, chatty nodes hidden (adnav, mavros, voyis, bridge) |
+| **Tab › Notes / Parameters** | Operator notes; live parameters of the recorder node |
+| **Tab › Bag ops** | `split_bagfile`, `stop` (closes the bag), `record` (needs a new `uri` after stop) |
+| **Tab › Discovery** | `is_discovery_running`, `start_discovery`, `stop_discovery` |
+
+## `rosbag_state.ts` → `/foxglove_script/rosbag_state`
+
+The stock recorder has no status topic, so the script derives state from its `/rosout`
+lines (logger `rhody.data.rosbag2_recorder`, strings verified against
+`librosbag2_transport.so` 0.26.11): `Starting recording to '<uri>'` (new run, resets
+counters, state = PAUSED because `record.start_paused: true`), `Pausing recording.`,
+`Resuming recording.`, `Recording stopped`, and `Subscribed to topic '…'` (counted).
+`/rhody/data/events/write_split` feeds the split count and file names. On a live
+connection nothing before connect is seen, hence UNKNOWN at first — the **Is paused?**
+button is the ground truth. Tunables at the top: `RECORDER_LOGGER`, `START_PAUSED`.
+
+**Known gap (verified 2026-10-12 against the live node and the jazzy source):** a real
+*resume* is logged only at DEBUG (`Already in the recording.` — rosbag2's two resume
+messages are swapped), while a real *pause* logs `Pausing recording.` at INFO. So the
+indicator can show PAUSED / STOPPED / started-paused, but RECORDING only if the recorder
+runs with `--log-level rhody.data.rosbag2_recorder:=debug` (add to the `--ros-args` in
+`~/.config/systemd/user/rhody_rosbag.sh`; the script already keys on the debug line).
+`is_paused` is always the ground truth. A no-op call (pause while paused) logs nothing.
+
+---
+
+# hydroport logging layout (superseded)
+
+`rhody-hydroport.service` is now `inactive` and conflicts with `rhody-rosbag.service`;
+`hydroport_logging.json` is kept for reference only. Its `/rhody/data/logging_on`
+buttons do nothing to the rosbag2 recorder.
+
+## original hydroport notes
 
 `hydroport_logging.json` — operator view for the hydroport MCAP bag recorder
 (`rhody-hydroport.service`, node `/rhody/data/bag_recorder`). One screen, no scripts.
