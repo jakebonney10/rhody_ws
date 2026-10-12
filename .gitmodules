@@ -52,3 +52,6 @@
 	# devel, not the default master: master is the upstream package
 	# template and contains no hydroport package at all.
 	branch = devel
+[submodule "src/roship_vessel"]
+	path = src/roship_vessel
+	url = https://github.com/SeawardScience/roship_vessel.git
