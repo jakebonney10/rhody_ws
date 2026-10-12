@@ -55,3 +55,6 @@
 [submodule "src/roship_vessel"]
 	path = src/roship_vessel
 	url = https://github.com/SeawardScience/roship_vessel.git
+[submodule "src/roship_io"]
+	path = src/roship_io
+	url = https://github.com/jakebonney10/roship_io.git
