@@ -58,3 +58,6 @@
 [submodule "src/roship_io"]
 	path = src/roship_io
 	url = https://github.com/jakebonney10/roship_io.git
+[submodule "src/roship_interfaces"]
+	path = src/roship_interfaces
+	url = https://github.com/SeawardScience/roship_interfaces.git
